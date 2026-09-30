@@ -1,0 +1,791 @@
+{
+  "info": {
+    "name": "BlogNest / ContentGen API - Complete Demo Collection",
+    "_postman_id": "blognest-contentgen-api-collection",
+    "description": "Complete Postman & Thunder Client collection for the BlogNest / ContentGen backend with RBAC, Blog CRUD, Comments, Categories, Tags, and Gemini AI.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "editor_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "reader_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "blogId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "commentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Health & System",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Root Welcome",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Authentication & RBAC",
+      "item": [
+        {
+          "name": "Register Admin User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@blognest.com\",\n  \"password\": \"AdminPassword123!\",\n  \"role\": \"Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Register Editor User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Editor User\",\n  \"email\": \"editor@blognest.com\",\n  \"password\": \"EditorPassword123!\",\n  \"role\": \"Editor\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Register Author User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Author User\",\n  \"email\": \"author@blognest.com\",\n  \"password\": \"AuthorPassword123!\",\n  \"role\": \"Author\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Register Reader User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Reader User\",\n  \"email\": \"reader@blognest.com\",\n  \"password\": \"ReaderPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"author@blognest.com\",\n  \"password\": \"AuthorPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Profile (Protected)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "users"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Categories & Tags",
+      "item": [
+        {
+          "name": "Create Category (Editor/Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{editor_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Artificial Intelligence\",\n  \"description\": \"Articles and insights about AI & ML\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"DeepLearning\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tags",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tags"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Tags",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/tags",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tags"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Blog Posts (CRUD & Lifecycle)",
+      "item": [
+        {
+          "name": "Create Blog (Author)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Architecting Scalable Microservices\",\n  \"content\": \"Microservices architecture breaks down monolithic complexity into discrete, deployable services.\",\n  \"category\": \"Artificial Intelligence\",\n  \"tags\": [\"DeepLearning\", \"Architecture\"],\n  \"photo\": \"https://images.unsplash.com/photo-1518770660439-4636190af475\",\n  \"status\": \"Published\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/blogs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "blogs"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Blogs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/blogs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "blogs"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Blogs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/blogs/search?q=Microservices",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "blogs",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Microservices"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Blog By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/blogs/{{blogId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "blogs",
+                "{{blogId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Blog",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Architecting Scalable Microservices (Revised)\",\n  \"content\": \"Updated detailed insights on microservice boundaries and API gateways.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/blogs/{{blogId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "blogs",
+                "{{blogId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Like Blog",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/blogs/{{blogId}}/like",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "blogs",
+                "{{blogId}}",
+                "like"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Blog",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/blogs/{{blogId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "blogs",
+                "{{blogId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Comments & Moderation",
+      "item": [
+        {
+          "name": "Create Comment (Reader/User)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{reader_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Fascinating breakdown of service boundaries!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/blogs/{{blogId}}/comments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "blogs",
+                "{{blogId}}",
+                "comments"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Comments for Blog",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/blogs/{{blogId}}/comments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "blogs",
+                "{{blogId}}",
+                "comments"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Moderate Comment (Editor/Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{editor_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/comments/{{commentId}}/moderate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "comments",
+                "{{commentId}}",
+                "moderate"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Google Gemini AI",
+      "item": [
+        {
+          "name": "Generate Blog with Gemini AI",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"topic\": \"Future of Cloud Native Development\",\n  \"category\": \"Technology\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ai/generate-blog",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "generate-blog"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Summarize Content with Gemini AI",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Cloud computing enables organizations to scale computing resources dynamically, reducing capital expenditure on hardware, accelerating time-to-market, and providing global reach with high availability and automated disaster recovery.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ai/summarize",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "summarize"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Security & Error Handling",
+      "item": [
+        {
+          "name": "Reject Missing Auth Token (401)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/auth/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reject Unauthorized Role - Reader Creates Blog (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{reader_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Unauthorized Blog Attempt\",\n  \"content\": \"This should be forbidden.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/blogs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "blogs"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reject Invalid Login Credentials (401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"author@blognest.com\",\n  \"password\": \"WrongPassword!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Validation Error (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"invalid-email-format\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
